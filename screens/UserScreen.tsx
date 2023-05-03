@@ -7,54 +7,59 @@ import { UserContext, UserContextData, initialState } from '../resources/users';
 export default function UserScreen({navigation, route}) {
   
   const [users, handleChange] = useForm(initialState);
-  
   const contextData:UserContextData={
     data: users,
     handleChange
-  }
-  const { id,name,role,address,salary } = users;
-  const [na,setNa] = useState('')
-  useEffect(()=>{
-    setNa(route.params.name)
-  },[])
-
+}
+    useEffect(() => {
+      handleChange('name', route.params.name);
+      handleChange('role', route.params.role);
+      handleChange('salary', route.params.salary.toString());
+      handleChange('address', route.params.address);
+    }, [route.params.name]);
   
+    const { name, role, salary, address } = users;
+  
+ 
+          
   return (
     <UserContext.Provider value={contextData}>
-      <View style={styles.container}>
-        <Text style={styles.paragraph}>
-          {route.params.name}
-        </Text>
-        <TextInput
-          style={styles.input}
-          placeholder='Name'
-          value={name}
-          onChangeText={(value: string) => handleChange('name', value)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder='Role'
-          value={role}
-          onChangeText={(value: string) => handleChange('role', value)}
-        />
-        <TextInput
+        <View style={styles.container}>
+          <Text style={styles.paragraph}>
+            {route.params.name}
+          </Text>
+          
+          <TextInput
             style={styles.input}
-            placeholder='Salary'
-            value={salary}
-            onChangeText={(value: string) => handleChange('salary', value)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder='Address'
-          value={address}
-          onChangeText={(value: string) => handleChange('address', value)}
-        />
-        <Button
-        title = "Previous Screen"
-        onPress = {() => navigation.navigate("Users")}
-        />
-      </View>
-    </UserContext.Provider>
+            placeholder='Name'
+            value={name}
+            onChangeText={(value: string) => handleChange('name', value)}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder='Role'
+            value={role}
+            onChangeText={(value: string) => handleChange('role', value)}
+          />
+          <TextInput
+              style={styles.input}
+              placeholder='Salary'
+              keyboardType='numeric'
+              value={salary}
+              onChangeText={(value: string) => handleChange('salary', value)}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder='Address'
+            value={address}
+            onChangeText={(value: string) => handleChange('address', value)}
+          />
+          <Button
+          title = "Previous Screen"
+          onPress = {() => navigation.navigate("Users")}
+          />
+        </View>
+      </UserContext.Provider>
   );
 }
 
